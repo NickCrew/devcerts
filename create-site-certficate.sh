@@ -19,14 +19,12 @@ ca_key=ca.key
 ca_cert=ca.crt
 
 DOMAIN=$1
-ORG_NAME="Local Development"
-[ ! -z "$2" ] && ORG_NAME=$2
+ORGANIZATION="Local Development"
+[ ! -z "$2" ] && ORGANIZATION=$2
 
 
 if [ ! -f $ca_key ]; then
-    echo -e "Certificate Authority private key does not exist!"
-    echo
-    echo -e "Please run create-ca.sh first."
+    echo -e "Certificate Authority private key does not exist!\n\nPlease run create-ca.sh first."
     exit
 fi
 
@@ -36,7 +34,7 @@ openssl genrsa -out "$DOMAIN.key" 4096
 # Create a certificate signing request
 openssl req \
 	-new \
-	-subj "/C=US/O=${ORG_NAME}/CN=$DOMAIN" \
+	-subj "/C=US/O=${ORGANIZATION}/CN=$DOMAIN" \
 	-key "$DOMAIN.key" \
 	-out "$DOMAIN.csr"
 
@@ -69,4 +67,4 @@ rm "$DOMAIN.ext"
 echo -e "Success!"
 echo
 echo -e "You can now use $DOMAIN.key and $DOMAIN.crt in your web server."
-echo -e "Don't forget that you must have imported ${CA_CERT} in your browser to make it accept the certificate."
+echo -e "Don't forget that you must have imported ${ca_cert} in your browser to make it accept the certificate."

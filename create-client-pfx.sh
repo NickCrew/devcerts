@@ -12,7 +12,7 @@ fi
 
 pfx_out="client.pfx"
 client_key="client.key"
-client_cert="client.cer"
+client_cert="client.crt"
 ca_cert="ca.crt"
 
 [ ! -z "$1" ] && pfx_out="$1"

@@ -5,6 +5,12 @@
 
 set -e
 
+ca_cert="ca.crt"
+ca_key="ca.key"
+
+subject=
+expiration=365 # In Days
+
 if [ -f $ca_cert ] || [ -f $ca_key ]; then
     echo -e "Certificate Authority files already exist!"
     echo
@@ -15,24 +21,20 @@ if [ -f $ca_cert ] || [ -f $ca_key ]; then
     exit
 fi
 
-if [[ -z $1 ]]; then
-	ca_cert=ca.crt
-else
-	ca_cert=$1
-fii
-ca_key=ca.key
-subject="/C=US/O=_Development CA/CN=Development certificates"
-expiration=365 # In Days
 
 # Generate private key
 openssl genrsa -out $ca_key 2048
+
+echo "Generating root certificate..."
+echo "Subject: ${subject}"
+echo "Expiration: ${expiration} days"
 
 # Generate root certificate
 openssl req \
 	-x509 \
 	-new \
 	-nodes \
-	-subj $subject  \
+	-subj "/C=US/O=_Development CA/CN=Development certificates" \
 	-key $ca_key \
 	-sha256 \
 	-days $expiration \
